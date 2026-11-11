@@ -1,0 +1,115 @@
+
+    <!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carte tarifaire</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: system-ui, sans-serif;
+      color: #172033;
+      background: #f4f7fb;
+    }
+
+    .pricing {
+      width: min(100%, 350px);
+      padding: 28px;
+      background: #fff;
+      border: 1px solid #e3e9f2;
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgb(20 35 60 / 12%);
+    }
+
+    .title { margin: 0 0 12px; font-size: 24px; }
+    .price { margin: 0 0 20px; color: #087443; font-size: 24px; font-weight: 700; }
+    .price small { color: #667085; font-size: 14px; font-weight: 400; }
+
+    .features { margin: 0; padding: 0; list-style: none; }
+    .features li { padding: 12px 0; border-bottom: 1px solid #edf0f5; }
+
+    .btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: #2457d6;
+      color: white;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: #173fa8; }
+    .btn:focus-visible { outline: 3px solid #9bb7ff; outline-offset: 3px; }
+    .status { min-height: 1.5em; color: #087443; }
+  </style>
+</head>
+<body>
+  <main id="plans" aria-label="Offres tarifaires"></main>
+
+  <script>
+    function Card({ title, price, period = "/mois", features = [] }) {
+      const card = document.createElement("article");
+      card.className = "pricing";
+
+      const heading = document.createElement("h2");
+      heading.className = "title";
+      heading.textContent = title;
+
+      const amount = document.createElement("p");
+      amount.className = "price";
+      amount.append(document.createTextNode(price + " "));
+
+      const cadence = document.createElement("small");
+      cadence.textContent = period;
+      amount.append(cadence);
+
+      const list = document.createElement("ul");
+      list.className = "features";
+
+      features.forEach((feature) => {
+        const item = document.createElement("li");
+        item.textContent = feature;
+        list.append(item);
+      });
+
+      const button = document.createElement("button");
+      button.className = "btn";
+      button.type = "button";
+      button.textContent = "Démarrer l’essai";
+
+      const status = document.createElement("p");
+      status.className = "status";
+      status.setAttribute("aria-live", "polite");
+
+      button.addEventListener("click", () => {
+        status.textContent = `Offre « ${title} » sélectionnée.`;
+      });
+
+      card.append(heading, amount, list, button, status);
+      return card;
+    }
+
+    const basicPlan = Card({
+      title: "Basic Plan",
+      price: "$9.99",
+      features: [
+        "1 Go de stockage",
+        "Assistance de base",
+        "Toutes les fonctions essentielles"
+      ]
+    });
+
+    document.querySelector("#plans").append(basicPlan);
+  </script>
+</body>
+</html>
